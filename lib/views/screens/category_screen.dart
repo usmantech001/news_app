@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:news_app/services/controllers/category_controller.dart';
 import 'package:news_app/services/controllers/news_controller.dart';
@@ -16,14 +17,31 @@ class CategoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<NewsController>(
-      builder: (newsCOnt) {
+      builder: (newsControlleer) {
         return GetBuilder<CategoryController>(
           builder: (categoryController) {
-            print('The lenght is ${categoryController.newsController.categoryNewsList.length}');
-            return Scaffold(
+            return 
+ Scaffold(
               appBar:
                   buildAppBar(firstText: categoryName, secText: '', color: Colors.blue),
-              body:  categoryController.newsController.isLoading2?Container(
+              body: newsControlleer.isConnected==false?Container(
+              height: MediaQuery.sizeOf(context).height,
+              alignment: Alignment.center,
+              color: Colors.white,
+              child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/images/no_connection.png',
+                                fit: BoxFit.cover,
+                                height: 150,
+                              ),
+                              Padding(
+                                padding:  EdgeInsets.only(left: 40.w, right: 40.w, bottom: 30.h),
+                                child: reuseableText(
+                                    text: 'Oops no internet connection found'),
+                              ),]),
+            ): categoryController.newsController.isLoading2?Container(
                               alignment: Alignment.center,
                               child: CircularProgressIndicator(),): ListView.builder(
                   itemCount: categoryController.newsController.categoryNewsList.length,

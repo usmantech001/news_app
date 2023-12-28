@@ -8,6 +8,7 @@ AppBar buildAppBar(
     required String secText,
     Color color = Colors.black}) {
   return AppBar(
+    backgroundColor: Colors.white,
     scrolledUnderElevation: 0,
     elevation: 0,
     centerTitle: true,

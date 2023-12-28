@@ -84,15 +84,6 @@ class HomeScreen extends StatelessWidget {
                               child: reuseableText(
                                   text: 'Oops no internet connection found'),
                             ),
-
-                            GestureDetector(
-                                onTap: () {
-                                  newsController.checkInternetConnection();
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(vertical:10.h, horizontal: 15),
-                                  color: Colors.blue,
-                                  child: reuseableText(text: 'Retry', color: Colors.white, fontSize: 18)))
                           ],
                         ))
                       : Column(
@@ -157,7 +148,7 @@ class HomeScreen extends StatelessWidget {
                                             : newsController
                                                 .breakingNewsList.length,
                                     effect:
-                                        WormEffect(activeDotColor: Colors.blue),
+                                        const WormEffect(activeDotColor: Colors.blue),
                                   ),
                             homeRowText(
                               firstText: 'Trending News!',
@@ -170,7 +161,7 @@ class HomeScreen extends StatelessWidget {
                             newsController.isLoading1 == true
                                 ? Container(
                                     alignment: Alignment.center,
-                                    child: CircularProgressIndicator(),
+                                    child:CircularProgressIndicator(color: Colors.blue, backgroundColor: Colors.grey[100],),
                                   )
                                 : Container(
                                     child: ListView.builder(
@@ -178,6 +169,7 @@ class HomeScreen extends StatelessWidget {
                                         physics:
                                             const NeverScrollableScrollPhysics(),
                                         itemCount: newsController
+                                            .trendingNewsList.length>5?5:newsController
                                             .trendingNewsList.length,
                                         itemBuilder: (context, index) {
                                           var trendingNews = newsController
