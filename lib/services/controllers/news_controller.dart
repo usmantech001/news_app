@@ -13,43 +13,72 @@ class NewsController extends GetxController{
   bool isLoading =false;
   bool isLoading1 =false;
   bool isLoading2 =false;
-  bool isConnected=false;
+  bool isConnected = false;
+   bool isAlreadyConnected=false ;
   int currentDotIndex =0;
+  late ConnectivityResult subscription;
   int index = 0;
 
   @override
    onInit()  async {
     super.onInit();
-     getBreakingNewsDataList();
-      getTrendingNewsDataList();
-  //  var isConnect =await checkInternetConnection();
- 
-  //   if(isConnect ==true){
-  //     isConnected = true;
-  //      getBreakingNewsDataList();
-  //     getTrendingNewsDataList();
-  //     update();
-     
-  //   }else{
-  //     isConnected = false;
-  //     update();
-  //   }
+     await checkInternetConnection();
+  }
+  @override
+  onReady() async {
+    super.onReady();
+   await checkInternetConnection();
+    
   }
   
+  
 
-   Future<bool> checkInternetConnection() async {
-    var connectivityResult = await Connectivity().checkConnectivity();
-    if(connectivityResult == ConnectivityResult.none){
-        print('..............The connection is${isConnected}');
-      
-      return false;
+   Future<void> checkInternetConnection() async {
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult status) async { 
+  if(status == ConnectivityResult.none) {
+    isConnected=false;
+    update();
+    isAlreadyConnected = false;
+    update();
+  }else if(status!= ConnectivityResult.none && breakingNewsList.isEmpty&&trendingNewsList.isEmpty){
+     
+     isConnected = true;
+    update();
 
-      
-    }else{ 
-       
-       return true;
+      await getBreakingNewsDataList();
+     await  getTrendingNewsDataList();
+     isAlreadyConnected =true;
+   update();
+ 
+  
+  }else{
+    isConnected = true;
+    update();
+    isAlreadyConnected = true;
+    update();
+  }
+
+ 
+  
    
-    }
+
+    });
+    // if(connectivityResult == ConnectivityResult.none){
+      
+       
+    //     print('..............The connection is false');
+      
+    //   //return false;
+
+      
+    // }else{ 
+    //   getBreakingNewsDataList();
+    //   getTrendingNewsDataList();
+    //    print('..............The connection istrue');
+     
+  
+   
+    // }
   }
 
  Future<void> getBreakingNewsDataList() async{
@@ -65,24 +94,22 @@ class NewsController extends GetxController{
    update();
 
    }else{
-    print(response.statusCode);
    }
    
   }
  Future<void> getTrendingNewsDataList() async{
   isLoading1 =true;
-  print('loading........');
   update();
    Response response= await newsRepo.getTrendingNewsData();
    if(response.statusCode==200){
     trendingNewsList =[];
 
     trendingNewsList.addAll(BreakingNewsModel.fromJson(response.body).articles.where((element) => element.urlToImage!=null));
-    print('gotten');
+    isLoading1 =false;
+   update();
     update();
    }
-  isLoading1 =false;
-   update();
+  
   }
 
   Future<void> getCategoryNewsDataList(category) async{
@@ -93,7 +120,6 @@ class NewsController extends GetxController{
     categoryNewsList =[];
 
     categoryNewsList.addAll(BreakingNewsModel.fromJson(response.body).articles.where((element) => element.urlToImage!=null));
-    print(categoryNewsList.length);
     update();
       isLoading2 =false;
   

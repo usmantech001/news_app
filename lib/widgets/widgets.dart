@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:news_app/models/news_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -96,10 +97,10 @@ Widget homeRowText({
 Widget buildCarouselTile(BuildContext context, ArticleModel breakingNews) {
   return Container(
     
-    margin: const EdgeInsets.symmetric(
-      horizontal: 10,
+    margin:  EdgeInsets.symmetric(
+      horizontal: 10.w,
     ),
-    height: 250,
+    height: 250.h,
     width: MediaQuery.sizeOf(context).width,
     child: Stack(
       children: [
@@ -110,16 +111,16 @@ Widget buildCarouselTile(BuildContext context, ArticleModel breakingNews) {
                     'assets/images/business.jpg',
                     fit: BoxFit.cover,
                     width: MediaQuery.sizeOf(context).width,
-                    height: 250,
+                    height: 250.h,
                   )
                 : CachedNetworkImage(
                     imageUrl: breakingNews.urlToImage!,
-                    height: 250,
+                    height: 250.h,
                     fit: BoxFit.cover,
                   )),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          margin: const EdgeInsets.only(top: 160),
+          padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+          margin:  EdgeInsets.only(top: 160.h),
           height: MediaQuery.sizeOf(context).height,
           width: MediaQuery.sizeOf(context).width,
           decoration: BoxDecoration(
@@ -127,7 +128,7 @@ Widget buildCarouselTile(BuildContext context, ArticleModel breakingNews) {
           child: reuseableText(
               text: breakingNews.title ?? '',
               color: Colors.white,
-              fontSize: 18,
+              fontSize: 18.sp,
               fontWeight: FontWeight.bold),
         )
       ],
@@ -137,17 +138,20 @@ Widget buildCarouselTile(BuildContext context, ArticleModel breakingNews) {
 
 Widget trendingTile(BuildContext context, ArticleModel trendingNews) {
   return Container(
-    padding: const EdgeInsets.only(left: 20, top: 10, bottom: 10, right: 10),
-    margin: const EdgeInsets.only(bottom: 10),
-    height: 160,
+    padding:  EdgeInsets.only(left: 20.w, top: 10.h, bottom: 10.h, right: 10.w),
+    margin:  EdgeInsets.only(bottom: 10.h),
+    height: 180.h,
     width: MediaQuery.sizeOf(context).width,
+  // width: 150,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
       // color: Colors.red
     ),
     child: Container(
+      
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
+          
           color: Colors.white,
           boxShadow: [
             BoxShadow(
@@ -162,38 +166,42 @@ Widget trendingTile(BuildContext context, ArticleModel trendingNews) {
             child: trendingNews.urlToImage == null
                 ? Image.asset(
                     'assets/images/sports.jpg',
-                    width: 150,
-                    height: 200,
+                    width: 150.w,
+                    height: 200.h,
                     fit: BoxFit.cover,
                   )
                 : CachedNetworkImage(
                     imageUrl: trendingNews.urlToImage!,
-                    width: 150,
+                    width: 150.w,
                     fit: BoxFit.cover,
-                    height: 200,
+                    height: 200.h,
                   ),
             // child: Image.asset('assets/images/sports.jpg', width: 150,height: 200, fit: BoxFit.cover,)
           ),
-          const SizedBox(
-            width: 10,
+           SizedBox(
+            width: 10.w,
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                  width: 200,
-                  height: 50,
-                  child: reuseableText(
-                      text: trendingNews.title ?? '',
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700)),
-              Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  width: 200,
-                  height: 62,
-                  child: reuseableText(
-                      text: trendingNews.description ?? '', fontSize: 15))
-            ],
+          Padding(
+            padding:  EdgeInsets.symmetric(vertical: 10.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+             // mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                 
+                    width: 170.w,
+                    child: reuseableText(
+                        text: trendingNews.title ?? '',
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.w700)),
+                Container(
+                    margin:  EdgeInsets.only(top: 5.h),
+                    width: 170.w,
+                    child: reuseableText(
+                        text: trendingNews.description ?? '', fontSize: 15, maxLines: 3)
+                        )
+              ],
+            ),
           )
         ],
       ),
